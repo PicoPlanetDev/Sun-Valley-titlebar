@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from betterTitlebar import Titlebar
+from sunValleyTitlebar import Titlebar
 
 tk_title = "Titlebar Demo"
 
@@ -12,6 +12,8 @@ root.title(tk_title)
 root.tk.call("source", "sun-valley.tcl")
 root.tk.call("set_theme", "light")
 
+icon = tk.PhotoImage(file='feather.gif')
+
 def change_theme():
     if root.tk.call("ttk::style", "theme", "use") == "sun-valley-dark":
         root.tk.call("set_theme", "light")
@@ -20,7 +22,7 @@ def change_theme():
 
 big_frame = ttk.Frame(root)
 
-titlebar = Titlebar(root, big_frame, 'light', tk_title, True, True, True, 400, 400)
+titlebar = Titlebar(root, big_frame, icon, tk_title, True, True, True, 400, 400)
 
 big_frame.pack(fill="both", expand=True)
 

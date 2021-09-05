@@ -2,14 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 from ctypes import windll
 
-def Titlebar(root, mainFrame, theme, titleText, minimize, maximize, close, minWidth, minHeight):
+def Titlebar(root, mainFrame, icon, titleText, minimize, maximize, close, minWidth, minHeight):
     #region Docstring
     """Creates a titlebar and basic window functions
 
     Args:
         root (master): Root window for titlebar
         mainFrame (master): Main frame of window
-        theme (str): Theme for titlebar, can be 'light' or 'dark'
+        icon (photoimage)): Tkiner photoimage
         titleText (str): Text to display in titlebar
         minimize (bool): Should a minimize button be created?
         maximize (bool): Should a maximize button be created?
@@ -100,6 +100,11 @@ def Titlebar(root, mainFrame, theme, titleText, minimize, maximize, close, minWi
         minimize_button = ttk.Button(title_bar, text=' 🗕 ',command=minimize_window)
         minimize_button.pack(side=tk.RIGHT, padx=5, pady=5)
     
+    if icon != None:
+        # Create the title bar icon
+        title_bar_icon = ttk.Label(title_bar, image=icon)
+        title_bar_icon.pack(side=tk.LEFT, padx=(10,0), fill=tk.Y)
+
     # Create the title bar title
     title_bar_title = ttk.Label(title_bar, text=titleText)
     title_bar_title.pack(side=tk.LEFT, padx=(10,0))

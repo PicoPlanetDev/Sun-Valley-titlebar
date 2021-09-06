@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-import sunValleyTitlebar
+import sun_valley_titlebar
 
 WINDOW_TITLE = "Titlebar Demo"
 WINDOW_MINSIZE = (400, 400)
@@ -35,18 +35,18 @@ big_frame = ttk.Frame(root)
 
 # Create the titlebar
 # Parameters: master, big_frame (for resizing), icon, title, minimize button?, maximize button?, close button?, min window size x, min window size y
-titlebar = sunValleyTitlebar.Titlebar(root, big_frame, icon, WINDOW_TITLE, True, True, True, WINDOW_MINSIZE[0], WINDOW_MINSIZE[1])
+titlebar = sun_valley_titlebar.Titlebar(root, big_frame, icon, WINDOW_TITLE, True, True, True, WINDOW_MINSIZE[0], WINDOW_MINSIZE[1])
 
 # Create a menubar
-menubar = sunValleyTitlebar.Menubar(root)
+menubar = sun_valley_titlebar.Menubar(root)
 
 # Add "File" menu to the menubar
-menu = sunValleyTitlebar.Menu(menubar, "File")
+menu = sun_valley_titlebar.Menu(menubar, "File")
 menu.add_command("Change theme", change_theme)
 menu.add_separator()
 menu.add_command("Exit", root.destroy)
 # Add "Options" menu to the menubar
-options_menu = sunValleyTitlebar.Menu(menubar, "Options")
+options_menu = sun_valley_titlebar.Menu(menubar, "Options")
 options_menu.add_command("Option 1")
 options_menu.add_command("Option 2")
 options_menu.add_command("Option 3")

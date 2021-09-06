@@ -2,20 +2,20 @@ import tkinter as tk
 from tkinter import ttk
 from ctypes import windll
 
-def Titlebar(root, mainFrame, icon, titleText, minimize, maximize, close, minWidth, minHeight):
+def Titlebar(root, main_frame, icon, title_text, minimize, maximize, close, min_width, min_height):
     #region Docstring
     """Creates a titlebar and basic window functions
 
     Args:
         root (master): Root window for titlebar
-        mainFrame (master): Main frame of window
-        icon (photoimage)): Tkiner photoimage
-        titleText (str): Text to display in titlebar
+        main_frame (master): Main frame of window
+        icon (PhotoImage): Tkinter PhotoImage for icon
+        title_text (str): Text to display in titlebar
         minimize (bool): Should a minimize button be created?
         maximize (bool): Should a maximize button be created?
         close (bool): Should a close button be created?
-        minWidth (int): Minimum width of titlebar
-        minHeight (int): Minimum height of titlebar
+        min_width (int): Minimum width of titlebar
+        min_height (int): Minimum height of titlebar
     """
     #endregion
     
@@ -106,7 +106,7 @@ def Titlebar(root, mainFrame, icon, titleText, minimize, maximize, close, minWid
         title_bar_icon.pack(side=tk.LEFT, padx=(10,0), fill=tk.Y)
 
     # Create the title bar title
-    title_bar_title = ttk.Label(title_bar, text=titleText)
+    title_bar_title = ttk.Label(title_bar, text=title_text)
     title_bar_title.pack(side=tk.LEFT, padx=(10,0))
 
     # Bind events for moving the title bar
@@ -118,12 +118,12 @@ def Titlebar(root, mainFrame, icon, titleText, minimize, maximize, close, minWid
     root.after(10, lambda: set_appwindow(root))
 
     #region Set up resizing functionality
-    resizex_widget = tk.Frame(mainFrame,cursor='sb_h_double_arrow')
+    resizex_widget = tk.Frame(main_frame,cursor='sb_h_double_arrow')
     resizex_widget.pack(side=tk.RIGHT,ipadx=2,fill=tk.Y)
     def resizex(event):
         xwin = root.winfo_x()
         difference = (event.x_root - xwin) - root.winfo_width()
-        if root.winfo_width() > minWidth:
+        if root.winfo_width() > min_width:
             try:
                 root.geometry(f"{ root.winfo_width() + difference }x{ root.winfo_height() }")
             except:
@@ -136,12 +136,12 @@ def Titlebar(root, mainFrame, icon, titleText, minimize, maximize, close, minWid
                     pass
     resizex_widget.bind("<B1-Motion>",resizex)
 
-    resizey_widget = tk.Frame(mainFrame,cursor='sb_v_double_arrow')
+    resizey_widget = tk.Frame(main_frame,cursor='sb_v_double_arrow')
     resizey_widget.pack(side=tk.BOTTOM,ipadx=2,fill=tk.X)
     def resizey(event):
         ywin = root.winfo_y()
         difference = (event.y_root - ywin) - root.winfo_height()
-        if root.winfo_height() > minHeight:
+        if root.winfo_height() > min_height:
             try:
                 root.geometry(f"{ root.winfo_width()  }x{ root.winfo_height() + difference}")
             except:
@@ -154,3 +154,25 @@ def Titlebar(root, mainFrame, icon, titleText, minimize, maximize, close, minWid
                     pass
     resizey_widget.bind("<B1-Motion>",resizey)
     #endregion
+
+# Menubar class creates a frame for the menubar which is accessed in the Menu class
+class Menubar:
+    def __init__(self, root):
+        self.root = root
+        self.menubar_frame = ttk.Frame(root)
+        self.menubar_frame.pack(fill=tk.X, pady=(0,10))
+
+# Adds a menubutton to the menubar frame with the text header
+# And allows for the menu to be populated with commands and separators
+class Menu:
+    def __init__(self, menubar, header):
+        self.menu = tk.Menu(menubar.menubar_frame)
+        self.menubutton = ttk.Menubutton(menubar.menubar_frame, text=header, menu=self.menu, direction="below")
+        self.menubutton.pack(side=tk.LEFT, padx=(10,0))
+
+    def add_command(self, label, command=None):
+        if command != None: self.menu.add_command(label=label, command=command)
+        else: self.menu.add_command(label=label)
+
+    def add_separator(self):
+        self.menu.add_separator()

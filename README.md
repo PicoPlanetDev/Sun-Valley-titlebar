@@ -1,5 +1,8 @@
 # Sun Valley Titlebar
 
+## Appearance
+![TitlebarDemo](https://user-images.githubusercontent.com/50522829/132222258-7a312ef9-d72c-42a7-81dc-69dc9ba592a0.gif)
+
 ## Description
 
 This repository provides an easy way to create a custom titlebar that matches rdbende's Sun Valley ttk theme.

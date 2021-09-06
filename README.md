@@ -45,6 +45,13 @@ menu.add_command("Exit", root.destroy) # Add a command to exit the program
 menu.add_separator() # Add a menu separator
 ```
 
+## TODO
+- Add rounded corner background (files with correct colors and 8px corner radius are already included)
+- Allow resizing from both sides
+- Fix a bug where *sometimes* (ugh) the window won't re-appear after being minimized
+
+If you complete any of these items, add a pull request and I'll happily include it!
+
 ## Credits
 
 Based on code from the following repositories:

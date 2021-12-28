@@ -5,7 +5,8 @@
 
 ## Description
 
-This repository provides an easy way to create a custom titlebar that matches rdbende's Sun Valley ttk theme.
+This repository provides an easy way to create a custom titlebar that matches rdbende's Sun Valley ttk theme. 
+Windows only for right now, it relies on windll to interact with the window manager.
 
 ## Usage
 

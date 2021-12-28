@@ -91,13 +91,13 @@ def Titlebar(root, main_frame, icon, title_text, minimize, maximize, close, min_
 
     # Create the title bar buttons
     if close:
-        close_button = ttk.Button(title_bar, text='  ×  ', command=root.destroy, style="Close.TButton")
+        close_button = ttk.Button(title_bar, text='  ×  ', command=root.destroy, style="Close.Titlebar.TButton")
         close_button.pack(side=tk.RIGHT, padx=5, pady=5)
     if maximize:
-        expand_button = ttk.Button(title_bar, text=' 🗖 ', command=maximize_window)
+        expand_button = ttk.Button(title_bar, text=' 🗖 ', command=maximize_window, style="Titlebar.TButton")
         expand_button.pack(side=tk.RIGHT, padx=0, pady=5)
     if minimize:
-        minimize_button = ttk.Button(title_bar, text=' 🗕 ',command=minimize_window)
+        minimize_button = ttk.Button(title_bar, text=' 🗕 ',command=minimize_window, style="Titlebar.TButton")
         minimize_button.pack(side=tk.RIGHT, padx=5, pady=5)
     
     if icon != None:

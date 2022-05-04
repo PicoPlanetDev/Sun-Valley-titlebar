@@ -41,11 +41,11 @@ def Titlebar(root, main_frame, icon, title_text, minimize, maximize, close, min_
             root.normal_size = root.geometry()
             expand_button.config(text=" 🗗 ")
             root.geometry(f"{root.winfo_screenwidth()}x{root.winfo_screenheight()}+0+0")
-            root.maximized = not root.maximized         
         else:
             expand_button.config(text=" 🗖 ")
             root.geometry(root.normal_size)
-            root.maximized = not root.maximized
+
+        root.maximized = not root.maximized
 
     def set_appwindow(mainWindow):
         GWL_EXSTYLE = -20
@@ -123,17 +123,11 @@ def Titlebar(root, main_frame, icon, title_text, minimize, maximize, close, min_
     def resizex(event):
         xwin = root.winfo_x()
         difference = (event.x_root - xwin) - root.winfo_width()
-        if root.winfo_width() > min_width:
+        if root.winfo_width() <= min_width and difference > 0 or root.winfo_width() > min_width:
             try:
                 root.geometry(f"{ root.winfo_width() + difference }x{ root.winfo_height() }")
             except:
                 pass
-        else:
-            if difference > 0:
-                try:
-                    root.geometry(f"{ root.winfo_width() + difference }x{ root.winfo_height() }")
-                except:
-                    pass
     resizex_widget.bind("<B1-Motion>",resizex)
 
     resizey_widget = tk.Frame(main_frame,cursor='sb_v_double_arrow')
@@ -141,17 +135,11 @@ def Titlebar(root, main_frame, icon, title_text, minimize, maximize, close, min_
     def resizey(event):
         ywin = root.winfo_y()
         difference = (event.y_root - ywin) - root.winfo_height()
-        if root.winfo_height() > min_height:
+        if root.winfo_height() <= min_height and difference > 0 or root.winfo_height() > min_height:
             try:
                 root.geometry(f"{ root.winfo_width()  }x{ root.winfo_height() + difference}")
             except:
                 pass
-        else:
-            if difference > 0:
-                try:
-                    root.geometry(f"{ root.winfo_width()  }x{ root.winfo_height() + difference}")
-                except:
-                    pass
     resizey_widget.bind("<B1-Motion>",resizey)
     #endregion
 

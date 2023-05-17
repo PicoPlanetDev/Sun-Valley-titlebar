@@ -1,6 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
 from ctypes import windll
+from pathlib import Path
+
+env = Path(__file__).parent
+try:
+	plugin = windll.LoadLibrary(str(env / "plugin64.dll"))
+except OSError:
+	plugin = windll.LoadLibrary(str(env / "plugin32.dll"))
+except:
+	pass
 
 def Titlebar(root, main_frame, icon, title_text, minimize, maximize, close, min_width, min_height):
     #region Docstring
@@ -48,40 +57,36 @@ def Titlebar(root, main_frame, icon, title_text, minimize, maximize, close, min_
         root.maximized = not root.maximized
 
     def set_appwindow(mainWindow):
-        GWL_EXSTYLE = -20
-        WS_EX_APPWINDOW = 0x00040000
-        WS_EX_TOOLWINDOW = 0x00000080
+        global hwnd
         hwnd = windll.user32.GetParent(mainWindow.winfo_id())
-        stylew = windll.user32.GetWindowLongW(hwnd, GWL_EXSTYLE)
-        stylew = stylew & ~WS_EX_TOOLWINDOW
-        stylew = stylew | WS_EX_APPWINDOW
-        res = windll.user32.SetWindowLongW(hwnd, GWL_EXSTYLE, stylew)
+        plugin.setwindow(hwnd)
         mainWindow.wm_withdraw()
         mainWindow.after(10, lambda: mainWindow.wm_deiconify())
 
     def get_pos(event):
         if root.maximized == False:
-            
-            xwin = root.winfo_x()
-            ywin = root.winfo_y()
-            startx = event.x_root
-            starty = event.y_root
-
-            ywin = ywin - starty
-            xwin = xwin - startx
-
             def move_window(event): # runs when window is dragged
                 root.config(cursor="fleur")
-                root.geometry(f'+{event.x_root + xwin}+{event.y_root + ywin}')
-
+                global x, y, hwnd
+                try:
+                    plugin.move(hwnd, root.winfo_x(), root.winfo_y(), event.x - x, event.y - y) # Use C for speed
+                except:
+                    pass
 
             def release_window(event): # runs when window is released
                 root.config(cursor="arrow")
                 
+            def drag_titlebar(event):
+                global x, y
+                x = event.x
+                y = event.y
+                
             title_bar.bind('<B1-Motion>', move_window)
             title_bar.bind('<ButtonRelease-1>', release_window)
+            title_bar.bind("<ButtonPress-1>", drag_titlebar)
             title_bar_title.bind('<B1-Motion>', move_window)
             title_bar_title.bind('<ButtonRelease-1>', release_window)
+            title_bar_title.bind("<ButtonPress-1>", drag_titlebar)
         else:
             expand_button.config(text=" 🗖 ")
             root.maximized = not root.maximized
@@ -116,32 +121,6 @@ def Titlebar(root, main_frame, icon, title_text, minimize, maximize, close, min_
     # Set up the window for minimizing functionality
     root.bind("<FocusIn>",deminimize)
     root.after(10, lambda: set_appwindow(root))
-
-    #region Set up resizing functionality
-    resizex_widget = tk.Frame(main_frame,cursor='sb_h_double_arrow')
-    resizex_widget.pack(side=tk.RIGHT,ipadx=2,fill=tk.Y)
-    def resizex(event):
-        xwin = root.winfo_x()
-        difference = (event.x_root - xwin) - root.winfo_width()
-        if root.winfo_width() <= min_width and difference > 0 or root.winfo_width() > min_width:
-            try:
-                root.geometry(f"{ root.winfo_width() + difference }x{ root.winfo_height() }")
-            except:
-                pass
-    resizex_widget.bind("<B1-Motion>",resizex)
-
-    resizey_widget = tk.Frame(main_frame,cursor='sb_v_double_arrow')
-    resizey_widget.pack(side=tk.BOTTOM,ipadx=2,fill=tk.X)
-    def resizey(event):
-        ywin = root.winfo_y()
-        difference = (event.y_root - ywin) - root.winfo_height()
-        if root.winfo_height() <= min_height and difference > 0 or root.winfo_height() > min_height:
-            try:
-                root.geometry(f"{ root.winfo_width()  }x{ root.winfo_height() + difference}")
-            except:
-                pass
-    resizey_widget.bind("<B1-Motion>",resizey)
-    #endregion
 
 # Menubar class creates a frame for the menubar which is accessed in the Menu class
 class Menubar:
